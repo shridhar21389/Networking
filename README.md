@@ -1,2 +1,6 @@
-# Networking
-Networking
+VPC_A
+  10.245.0.0/16
+VPC_B
+  10.246.0.0/16
+VPC_C
+  10.247.0.0/16
