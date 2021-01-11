@@ -1,0 +1,331 @@
+{
+    "Parameters": {
+        "VpcCidr": {
+            "Type": "String",
+            "Default": "10.245.0.0/16",
+            "Description": "CIDR Block for VPC"
+        },
+        "VpcName": {
+            "Type": "String",
+            "Default": "shridhar-aue2-test-vpc-a",
+            "Description": "Name of the AWS VPC"
+        },
+        "UserPublicIPforBastionAccess": {
+            "Type": "String",
+            "Description": "User's public IP to be whitelisted for Bastion Access"
+        }
+    },
+    "Resources": {
+        "VPC": {
+            "Type": "AWS::EC2::VPC",
+            "Properties": {
+                "EnableDnsSupport": "true",
+                "EnableDnsHostnames": "true",
+                "CidrBlock": {
+                    "Ref": "VpcCidr"
+                },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Ref": "VpcName"
+                        }
+                    }
+                ]
+            }
+        },
+        "PublicRouteTable": {
+            "Type" : "AWS::EC2::RouteTable",
+            "Properties" : {
+                "VpcId" : {
+                    "Ref": "VPC"
+                },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "shridhar-public-rtb-vpc-a"
+                    }
+                ]
+            }
+        },
+        "PrivateRouteTable": {
+            "Type" : "AWS::EC2::RouteTable",
+            "Properties" : {
+                "VpcId" : {
+                    "Ref": "VPC"
+                },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "shridhar-private-rtb-vpc-a"
+                    }
+                ]
+            }
+        },
+        "AZ1PublicSubnet": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "MapPublicIpOnLaunch": "True",
+                "CidrBlock": "10.245.1.0/24",
+                "AvailabilityZone": "us-east-2a",
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "shridhar-aue2-test-AZ1-public-vpc-a"
+                    }
+                ]
+            }
+        },
+        "AZ1PublicSubnetRouteTableAssociation": {
+            "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties" : {
+                "SubnetId" : { "Ref" : "AZ1PublicSubnet" },
+                "RouteTableId" : { "Ref" : "PublicRouteTable" }
+            }
+        },
+        "AZ1PrivateSubnet": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "CidrBlock": "10.245.2.0/24",
+                "AvailabilityZone": "us-east-2a",
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "shridhar-aue2-test-AZ1-private-vpc-a"
+                    }
+                ]
+            }
+        },
+        "AZ1PrivateSubnetRouteTableAssociation": {
+            "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties" : {
+                "SubnetId" : { "Ref" : "AZ1PrivateSubnet" },
+                "RouteTableId" : { "Ref" : "PrivateRouteTable" }
+            }
+        },
+        "AZ2PublicSubnet": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "MapPublicIpOnLaunch": "True",
+                "CidrBlock": "10.245.3.0/24",
+                "AvailabilityZone": "us-east-2b",
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "shridhar-aue2-test-AZ2-public-vpc-a"
+                    }
+                ]
+            }
+        },
+        "AZ2PublicSubnetRouteTableAssociation": {
+            "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties" : {
+                "SubnetId" : { "Ref" : "AZ2PublicSubnet" },
+                "RouteTableId" : { "Ref" : "PublicRouteTable" }
+            }
+        },
+        "AZ2PrivateSubnet": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "CidrBlock": "10.245.4.0/24",
+                "AvailabilityZone": "us-east-2b",
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "shridhar-aue2-test-AZ2-private-vpc-a"
+                    }
+                ]
+            }
+        },
+        "AZ2PrivateSubnetRouteTableAssociation": {
+            "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties" : {
+                "SubnetId" : { "Ref" : "AZ2PrivateSubnet" },
+                "RouteTableId" : { "Ref" : "PrivateRouteTable" }
+            }
+        },
+        "InternetGateway": {
+            "Type": "AWS::EC2::InternetGateway",
+            "Properties": {
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "shridhar-aue2-test-IGW-vpc-a"
+                    }
+                ]
+            }
+        },
+        "InternetGatewayAttachment": {
+            "Type": "AWS::EC2::VPCGatewayAttachment",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "InternetGatewayId": {
+                    "Ref": "InternetGateway"
+                }
+            }
+        },
+        "InternetGatewayRoute": {
+            "Type" : "AWS::EC2::Route",
+            "Properties" : {
+                "RouteTableId" : { "Ref" : "PublicRouteTable" },
+                "DestinationCidrBlock" : "0.0.0.0/0",
+                "GatewayId" : { "Ref" : "InternetGateway" }
+            }
+        },
+        "NATGatewayEIP": {
+            "Type" : "AWS::EC2::EIP",
+            "Properties" : {
+                "Domain" : "vpc",
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "shridhar-NATGatewayEIP-vpc-a"
+                    }
+                ]
+            }
+        },
+        "NATGateway": {
+            "Type" : "AWS::EC2::NatGateway",
+            "Properties" : {
+                "AllocationId" : { "Fn::GetAtt" : ["NATGatewayEIP", "AllocationId"]},
+                "SubnetId" : {
+                    "Ref": "AZ1PublicSubnet"
+                },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "shridhar-NATGateway-vpc-a"
+                    }
+                ]
+            }
+        },
+        "NATGatewayRoute": {
+            "Type" : "AWS::EC2::Route",
+            "Properties" : {
+                "RouteTableId" : { "Ref" : "PrivateRouteTable" },
+                "DestinationCidrBlock" : "0.0.0.0/0",
+                "NatGatewayId" : { "Ref" : "NATGateway" }
+            }
+        },
+        "BastionSecurityGroup" : {
+            "Type" : "AWS::EC2::SecurityGroup",
+            "Properties" : {
+                "GroupDescription" : "Allow ssh to Bastion Host",
+                "VpcId" : {"Ref" : "VPC"},
+                "SecurityGroupIngress" : [
+                    {
+                        "IpProtocol" : "tcp",
+                        "FromPort" : 22,
+                        "ToPort" : 22,
+                        "CidrIp" : { "Ref" : "UserPublicIPforBastionAccess" }
+                    },
+                    {
+                        "IpProtocol" : "icmp",
+                        "FromPort" : 8,
+                        "ToPort" : -1,
+                        "CidrIp" : "10.245.0.0/16"
+                    },
+                    {
+                        "IpProtocol" : "icmp",
+                        "FromPort" : 8,
+                        "ToPort" : -1,
+                        "CidrIp" : "10.246.0.0/16"
+                    },
+                    {
+                        "IpProtocol" : "icmp",
+                        "FromPort" : 8,
+                        "ToPort" : -1,
+                        "CidrIp" : "10.247.0.0/16"
+                    },
+                    {
+                        "IpProtocol" : "tcp",
+                        "FromPort" : 3389,
+                        "ToPort" : 3389,
+                        "CidrIp" : { "Ref" : "UserPublicIPforBastionAccess" }
+                    }
+                ],
+                "Tags" : [
+                    {
+                        "Key": "cleardata:remediation-disabled",
+                        "Value": "True"
+                    },
+                    {
+                        "Key": "Name",
+                        "Value": "BastionSecurityGroup-vpc-a"
+                    }
+                ]
+            }
+        },
+        "BastionEC2Instance" : {
+            "Type" : "AWS::EC2::Instance",
+            "Properties" : {
+                "ImageId" : "ami-07c8bc5c1ce9598c3",
+                "InstanceType" : "t2.micro",
+                "KeyName" : "aue2-lab-kp",
+                "NetworkInterfaces": [ {
+                  "AssociatePublicIpAddress": "true",
+                  "DeviceIndex": "0",
+                  "GroupSet": [{ "Ref" : "BastionSecurityGroup" }],
+                  "SubnetId": { "Ref" : "AZ1PublicSubnet" }
+                } ],
+                "Tags" : [
+                    {
+                        "Key": "Name",
+                        "Value": "shridhar-bastion-vpc-a"
+                    }
+                ],
+                "BlockDeviceMappings" : [
+                   {
+                      "DeviceName" : "/dev/xvda",
+                      "Ebs" : {
+                        "VolumeType" : "gp2",
+                        "VolumeSize" : "8",
+                        "DeleteOnTermination" : "true",
+                        "Encrypted" : "true"
+                      }
+                    }
+                ],
+                "UserData" : {
+                   "Fn::Base64" : {
+                      "Fn::Join" : [ "", [
+                         "#!/bin/bash -xe\n",
+                         "sudo yum -y update\n",
+                         "sudo yum install -y https://repo.saltstack.com/py3/amazon/salt-py3-amzn2-repo-latest.amzn2.noarch.rpm\n",
+                         "sudo yum clean expire-cache\n",
+                         "sudo yum install -y salt-master\n",
+                         "sudo service salt-master start\n",
+                         "sudo chkconfig salt-master on\n",
+                         "sudo amazon-linux-extras install -y docker\n",
+                         "sudo service docker start\n",
+                         "sudo chkconfig docker on\n",
+                         "sudo yum install -y git\n",
+                         "sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose\n",
+                         "sudo chmod +x /usr/local/bin/docker-compose\n",
+                         "mkdir git-repo\n",
+                         "cd git-repo\n",
+                         "git init\n",
+                         "git remote add origin https://github.com/shridhar21389/devops.git\n\n",
+                         "cd /git-repo\n",
+                         "sudo git pull origin main\n",
+                         "sudo git config --global user.name \"shridhar21389\"\n",
+                         "sudo git config --global user.email shridhar21389@gmail.com\n" ] ]
+                   }
+                }
+            }
+        }
+    }
+}
