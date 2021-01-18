@@ -234,6 +234,12 @@
                         "CidrIp" : { "Ref" : "UserPublicIPforBastionAccess" }
                     },
                     {
+                        "IpProtocol" : "tcp",
+                        "FromPort" : 80,
+                        "ToPort" : 80,
+                        "CidrIp" : { "Ref" : "UserPublicIPforBastionAccess" }
+                    },
+                    {
                         "IpProtocol" : "icmp",
                         "FromPort" : 8,
                         "ToPort" : -1,
@@ -304,25 +310,9 @@
                       "Fn::Join" : [ "", [
                          "#!/bin/bash -xe\n",
                          "sudo yum -y update\n",
-                         "sudo yum install -y https://repo.saltstack.com/py3/amazon/salt-py3-amzn2-repo-latest.amzn2.noarch.rpm\n",
-                         "sudo yum clean expire-cache\n",
-                         "sudo yum install -y salt-master\n",
-                         "sudo service salt-master start\n",
-                         "sudo chkconfig salt-master on\n",
-                         "sudo amazon-linux-extras install -y docker\n",
-                         "sudo service docker start\n",
-                         "sudo chkconfig docker on\n",
-                         "sudo yum install -y git\n",
-                         "sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose\n",
-                         "sudo chmod +x /usr/local/bin/docker-compose\n",
-                         "mkdir git-repo\n",
-                         "cd git-repo\n",
-                         "git init\n",
-                         "git remote add origin https://github.com/shridhar21389/devops.git\n\n",
-                         "cd /git-repo\n",
-                         "sudo git pull origin main\n",
-                         "sudo git config --global user.name \"shridhar21389\"\n",
-                         "sudo git config --global user.email shridhar21389@gmail.com\n" ] ]
+                         "sudo yum install -y httpd\n",
+                         "sudo service httpd start\n",
+                         "sudo chkconfig httpd on\n" ] ]
                    }
                 }
             }
