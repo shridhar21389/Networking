@@ -312,6 +312,10 @@
                          "sudo yum -y update\n",
                          "sudo yum install -y httpd\n",
                          "sudo service httpd start\n",
+                         "sudo chown -R $USER:$USER /var/www\n",
+                         "sudo /bin/echo Welcome to shridhar-bastion-vpc-b web page >> /var/www/html/index.html\n",
+                         "sudo service httpd stop\n",
+                         "sudo service httpd start\n",
                          "sudo chkconfig httpd on\n" ] ]
                    }
                 }
