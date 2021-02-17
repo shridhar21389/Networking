@@ -1,10 +1,12 @@
 - VPC_A
     - 10.245.0.0/16
-    - Ohio
+    - US East (Ohio)us-east-2
 - VPC_B
     - 10.246.0.0/16
-    - Ohio
+    - US East (Ohio)us-east-2
 - VPC_C
     - 10.247.0.0/16
-    - Ohio
-
+    - US East (Ohio)us-east-2
+- VPC_D
+    - 10.248.0.0/16
+    - US West (Oregon)us-west-2
