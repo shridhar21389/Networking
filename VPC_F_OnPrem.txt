@@ -334,7 +334,7 @@
             "Properties" : {
                 "RouteTableId" : { "Ref" : "PublicRouteTable" },
                 "DestinationCidrBlock" : "10.249.0.0/16",
-                "GatewayId" : { "Ref" : "BastionEC2Instance" }
+                "InstanceId" : { "Ref" : "BastionEC2Instance" }
             }
         },
         "VPNApplianceRoute2": {
@@ -342,7 +342,7 @@
             "Properties" : {
                 "RouteTableId" : { "Ref" : "PrivateRouteTable" },
                 "DestinationCidrBlock" : "10.249.0.0/16",
-                "GatewayId" : { "Ref" : "BastionEC2Instance" }
+                "InstanceId" : { "Ref" : "BastionEC2Instance" }
             }
         }
     }
