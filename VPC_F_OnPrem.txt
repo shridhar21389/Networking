@@ -264,6 +264,12 @@
                         "CidrIp" : "10.249.0.0/16"
                     },
                     {
+                        "IpProtocol" : "-1",
+                        "FromPort" : -1,
+                        "ToPort" : -1,
+                        "CidrIp" : "10.250.0.0/16"
+                    },
+                    {
                         "IpProtocol" : "tcp",
                         "FromPort" : 3389,
                         "ToPort" : 3389,
