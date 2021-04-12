@@ -22,4 +22,3 @@
     - start ipsec process
     - configure SG to allow traffic from VGW
     - Automated: route tables, SGs for internal VPN traffic, source/destination checks
-    - Pending: edit bastion SG to allow all traffic from 10.250.0.0/16
