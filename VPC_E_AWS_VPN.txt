@@ -228,7 +228,7 @@
                 "Tags": [
                     {
                         "Key": "Name",
-                        "Value": "shridhar-fgw-vpc-e-aws"
+                        "Value": "shridhar-vgw-vpc-e-aws"
                     }
                 ]
             }
