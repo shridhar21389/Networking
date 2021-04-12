@@ -244,21 +244,21 @@
                 }
             }
         },
-        "VGWRoute1": {
-            "Type" : "AWS::EC2::Route",
+        "VGWRoute1Propagtion": {
+            "Type" : "AWS::EC2::VPNGatewayRoutePropagation",
             "Properties" : {
-                "RouteTableId" : { "Ref" : "PublicRouteTable" },
-                "DestinationCidrBlock" : "10.250.0.0/16",
-                "GatewayId" : { "Ref" : "VirtualPrivateGateway" }
-            }
+                "RouteTableIds" : [{"Ref" : "PublicRouteTable"}],
+                "VpnGatewayId" : { "Ref" : "VirtualPrivateGateway" }
+            },
+            "DependsOn" : "VGWAttachment"
         },
-        "VGWRoute2": {
-            "Type" : "AWS::EC2::Route",
+        "VGWRoute2Propagtion": {
+            "Type" : "AWS::EC2::VPNGatewayRoutePropagation",
             "Properties" : {
-                "RouteTableId" : { "Ref" : "PrivateRouteTable" },
-                "DestinationCidrBlock" : "10.250.0.0/16",
-                "GatewayId" : { "Ref" : "VirtualPrivateGateway" }
-            }
+                "RouteTableIds" : [{"Ref" : "PrivateRouteTable"}],
+                "VpnGatewayId" : { "Ref" : "VirtualPrivateGateway" }
+            },
+            "DependsOn" : "VGWAttachment"
         },
         "BastionSecurityGroupAWS" : {
             "Type" : "AWS::EC2::SecurityGroup",
