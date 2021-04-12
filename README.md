@@ -10,3 +10,9 @@
 - VPC_D
     - 10.248.0.0/16
     - US West (Oregon)us-west-2
+- VPC_E_AWS_VPN
+    - 10.249.0.0/16
+    - US West (Oregon)us-west-2
+- VPC_F_OnPrem
+    - 10.250.0.0/16
+    - US West (Oregon)us-west-2
