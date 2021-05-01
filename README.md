@@ -22,3 +22,9 @@
     - start ipsec process
     - configure SG to allow traffic from VGW
     - Automated: route tables, SGs for internal VPN traffic, source/destination checks
+VPC_G_AWS_VPN
+	- 10.251.0.0/16
+	- US West (Oregon)us-west-2
+	- Pairs with VPC_H
+	- create CGW, VPN connection manually
+	- Automated: Route tables, SGs, VGW
