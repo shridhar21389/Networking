@@ -28,3 +28,11 @@
     - Pairs with VPC_H
     - create CGW, VPN connection manually
     - Automated: Route tables, SGs, VGW
+- VPC_H_StrongswanRouteBased
+    - 10.252.0.0/16
+    - US West (Oregon)us-west-2
+    - Pairs with VPC_G
+    - ????configure ipsec.conf, ipsec.secrets, /etc/sysctl.conf
+    - ????start ipsec process
+    - ????configure SG to allow traffic from VGW
+    - ????Automated: route tables, SGs for internal VPN traffic, source/destination checks
