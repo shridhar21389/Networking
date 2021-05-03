@@ -291,7 +291,7 @@
         "BastionEC2Instance" : {
             "Type" : "AWS::EC2::Instance",
             "Properties" : {
-                "ImageId" : "ami-0e999cbd62129e3b1",
+                "ImageId" : "ami-008b09448b998a562",
                 "InstanceType" : "t2.micro",
                 "KeyName" : "aue2-lab-kp",
                 "SourceDestCheck" : "false",
@@ -322,15 +322,14 @@
                    "Fn::Base64" : {
                       "Fn::Join" : [ "", [
                          "#!/bin/bash -xe\n",
-                         "sudo yum -y update\n",
-                         "yum install openswan -y\n",
-                         "sudo yum install -y httpd\n",
-                         "sudo service httpd start\n",
+                         "sudo apt-get update -y\n",
+                         "sudo apt install apache2 -y\n",
+                         "sudo service apache2 start\n",
                          "sudo chown -R $USER:$USER /var/www\n",
+                         "sudo rm /var/www/html/index.html\n",
                          "sudo /bin/echo Welcome to shridhar-bastion-vpc-h-on-prem web page >> /var/www/html/index.html\n",
-                         "sudo service httpd stop\n",
-                         "sudo service httpd start\n",
-                         "sudo chkconfig httpd on\n" ] ]
+                         "sudo service apache2 stop\n",
+                         "sudo service apache2 start\n" ] ]
                    }
                 }
             }
@@ -349,6 +348,29 @@
                 "RouteTableId" : { "Ref" : "PrivateRouteTable" },
                 "DestinationCidrBlock" : "10.251.0.0/16",
                 "InstanceId" : { "Ref" : "BastionEC2Instance" }
+            }
+        },
+        "BastionSecondaryENI" : {
+            "Type" : "AWS::EC2::NetworkInterface",
+            "Properties" : {
+                "Description" : "BastionSecondaryENI",
+                "GroupSet": [{ "Ref" : "BastionSecurityGroupOnPrem" }],
+                "SourceDestCheck" : "false",
+                "SubnetId": { "Ref" : "AZ1PrivateSubnet" },
+                "Tags" : [
+                    {
+                        "Key": "Name",
+                        "Value": "BastionSecondaryENI"
+                    }
+                ]
+            }
+        },
+        "BastionSecondaryENIAttachment" : {
+            "Type" : "AWS::EC2::NetworkInterfaceAttachment",
+            "Properties" : {
+                "InstanceId" : {"Ref" : "BastionEC2Instance"},
+                "NetworkInterfaceId" : {"Ref" : "BastionSecondaryENI"},
+                "DeviceIndex" : "1"
             }
         }
     }
