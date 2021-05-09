@@ -32,7 +32,4 @@
     - 10.252.0.0/16
     - US West (Oregon)us-west-2
     - Pairs with VPC_G
-    - ????configure ipsec.conf, ipsec.secrets, /etc/sysctl.conf
-    - ????start ipsec process
-    - ????configure SG to allow traffic from VGW
-    - ????Automated: route tables, SGs for internal VPN traffic, source/destination checks
+    - configure the VPN appliance based on Strongswan_RouteBased.txt in KB
